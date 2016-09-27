@@ -2,7 +2,7 @@
 #define GLOBALS_H
 #include "rogue.h"
 
-extern entity *cursor;
+extern cursor *main_cursor;
 extern creature *player;
 extern creature **creatures;
 

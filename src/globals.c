@@ -1,7 +1,7 @@
 #include "rogue.h"
 #include "creature.h"
 
-entity *cursor;
+cursor *main_cursor;
 creature *player;
 creature **creatures;
 

@@ -21,9 +21,9 @@ typedef enum command {
     QUIT,
 } command;
 
-typedef struct entity {
+typedef struct cursor {
     int y, x;
-} entity;
+} cursor;
 
 typedef struct creature {
     char name[80];
