@@ -1,9 +1,8 @@
 #include "rogue.h"
 #include "creature.h"
 
-cursor *main_cursor;
-creature *player;
-creature **creatures;
+creature_t *player;
+creature_t **creatures;
 
-tile **map;
+map_t map;
 

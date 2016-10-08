@@ -2,11 +2,10 @@
 #define GLOBALS_H
 #include "rogue.h"
 
-extern cursor *main_cursor;
-extern creature *player;
-extern creature **creatures;
+extern creature_t *player;
+extern creature_t **creatures;
 
-extern tile **map;
+extern map_t map;
 
 
 #endif /* GLOBALS_H */
