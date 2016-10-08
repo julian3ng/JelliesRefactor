@@ -4,7 +4,6 @@
 #include "rogue.h"
 #include "view.h"
 #include "creature.h"
-#include "cursor.h"
 #include "io_ctrl.h"
 #include "map.h"
 
@@ -14,11 +13,10 @@
  */
 int rogue_init(int seed) {
     view_create();
-    cursor_create(&main_cursor);
-    creature_create(&player);
+    player = creature_create();
     creature_init(player, "Julian", MAP_HEIGHT/2, MAP_WIDTH/2, 10, 0, 0, '@');
-    map_create(&map);
-
+    map = map_create();
+    map_init(&map);
     return 0;
 }
 
@@ -27,7 +25,6 @@ int rogue_init(int seed) {
   Exit gracefully from curses
  */
 int rogue_exit() {
-    cursor_destroy(main_cursor);
     creature_destroy(player);
     map_destroy(map);
     view_destroy();
@@ -39,8 +36,6 @@ int rogue_exit() {
   Update game state
  */
 void update(command parsed_input) {
-    creature_update(player, parsed_input);
-    cursor_update(main_cursor, parsed_input);
 }
 
 /*
