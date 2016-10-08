@@ -4,22 +4,29 @@
 #include "rogue.h"
 
 
+typedef struct creature {
+    char name[80];
+    int y, x, hp, atk, def;
+    char glyph;
+} creature;
+
+
 /*
   Create a creature (make an entity and set it to be a creature)
 */
-int creature_create(creature **c) {
-    *c = (creature *) malloc(sizeof(creature));
-    if (!*c) {
+creature_t *creature_create(void) {
+    creature *c = (creature *) malloc(sizeof(creature));
+    if (!c) {
         fprintf(stderr, "Malloc failed\n");
         exit(1);
     }
-    return 0;
+    return c;
 }
 
 /*
   Set a creature's fields
 */
-int creature_init(creature *c, char name[80], int y, int x,
+int creature_init(creature_t *c, char name[80], int y, int x,
                   int hp, int atk, int def, char glyph) {
     strlcpy(c->name, name, 80);
     c->y     = y;
@@ -30,49 +37,44 @@ int creature_init(creature *c, char name[80], int y, int x,
     c->glyph = glyph;
 }
 
-/*
-  Update a creature's state
-*/
+int creature_get_y(creature_t *c) {
+    return c->y;
+}
+
+int creature_get_x(creature_t *c) {
+    return c->x;
+}
+
+void creature_set_pos(creature_t *c, int y, int x) {
+    c->y = y;
+    c->x = x;
+}
+
 void creature_update(creature *cr, command c) {
     switch(c) {
     case MOVE_U:
-        cr->y--;
-        break;
     case MOVE_D:
-        cr->y++;
-        break;
     case MOVE_L:
-        cr->x--;
-        break;
     case MOVE_R:
-        cr->x++;
-        break;
     case MOVE_UL:
-        cr->y--;
-        cr->x--;
-        break;
     case MOVE_UR:
-        cr->y--;
-        cr->x++;
-        break;
     case MOVE_DL:
-        cr->y++;
-        cr->x--;
-        break;
     case MOVE_DR:
-        cr->y++;
-        cr->x++;
-        break;
     case STAY:
     default:
         break;
     }
 }
 
+char creature_get_glyph(creature_t *c) {
+    return c->glyph;
+}
+
 /*
   Free a creature's memory 
  */
-int creature_destroy(creature *c) {
+int creature_destroy(creature_t *c) {
     free(c);
     return 0;
 }
+
