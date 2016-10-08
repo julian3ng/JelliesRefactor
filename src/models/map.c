@@ -20,10 +20,19 @@ typedef struct tile {
 tile_type tile_get_type(tile_t *t) {
     return t->type;
 }
+
 char tile_get_glyph(tile_t *t) {
     return t->glyph;
 }
 
+creature_t *tile_get_creature(tile_t *t) {
+    return t->c;
+}
+
+void tile_set_creature(tile_t *t, creature_t *c) {
+    t->c = c;
+}
+    
 map_t map_create() {
     tile **m = (tile **) malloc(sizeof(tile *) * MAP_HEIGHT);
     for (int i=0; i<MAP_HEIGHT; i++) {
@@ -37,7 +46,7 @@ int map_init(map_t *m) {
     for (int i=0; i<MAP_HEIGHT; i++) {
         for (int j=0; j<MAP_WIDTH; j++) {
             if ((i == 0) || (i == MAP_HEIGHT-1) || (j == 0) || (j == MAP_WIDTH-1)) {
-                (*m)[i][j] = (tile) {FLOOR, UNFLAGGED, '#', NULL};
+                (*m)[i][j] = (tile) {WALL, UNFLAGGED, '#', NULL};
             } else {
                 (*m)[i][j] = (tile) {FLOOR, UNFLAGGED, '.', NULL};
             }
@@ -48,6 +57,9 @@ int map_init(map_t *m) {
 }
 
 tile_t *map_tile_at(int y, int x, map_t m) {
+    if ((y < 0) || (y >= MAP_HEIGHT) || (x < 0) || (x >= MAP_WIDTH)) {
+        return NULL;
+    }
     return &m[y][x];
 }
 int map_destroy(map_t m) {
