@@ -21,37 +21,16 @@ typedef enum command {
     QUIT,
 } command;
 
-typedef struct cursor {
-    int y, x;
-} cursor;
-
-typedef struct creature {
-    char name[80];
-    int y, x, hp, atk, def;
-    char glyph;
-} creature;
-
-typedef struct item {
-    int id;
-} item;
 
 typedef enum tile_type {
     FLOOR,
     WALL,
 } tile_type;
 
-typedef enum tile_flags {
-    UNFLAGGED = LSHIFT(0),
-    FUTURE_WALL = LSHIFT(1),
-    FUTURE_FLOOR = LSHIFT(2),
-} tile_flags;
 
-typedef struct tile {
-    tile_type type;
-    tile_flags flags;
-    char glyph;
-    creature *c;
-} tile;
+typedef struct creature creature_t;
+typedef struct tile tile_t;
+typedef tile_t ** map_t;
    
 
 #endif /* ROGUE_H */
