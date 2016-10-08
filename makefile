@@ -9,7 +9,7 @@ SRC=$(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.c))
 OBJ=$(patsubst src/%.c,build/%.o,$(SRC))
 INC=-Iinclude
 LDFLAGS=-lncurses
-CFLAGS=-Wall -Werror -g
+CFLAGS=-std=c99 -Wall -Werror -g
 
 vpath %.c $(SRC_DIR)
 
