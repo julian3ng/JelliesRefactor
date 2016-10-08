@@ -2,10 +2,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "rogue.h"
-
+#include "action.h"
 
 typedef struct creature {
     char name[80];
+    movement_t *m;
     int y, x, hp, atk, def;
     char glyph;
 } creature;
@@ -50,21 +51,15 @@ void creature_set_pos(creature_t *c, int y, int x) {
     c->x = x;
 }
 
-void creature_update(creature *cr, command c) {
-    switch(c) {
-    case MOVE_U:
-    case MOVE_D:
-    case MOVE_L:
-    case MOVE_R:
-    case MOVE_UL:
-    case MOVE_UR:
-    case MOVE_DL:
-    case MOVE_DR:
-    case STAY:
-    default:
-        break;
-    }
+
+void creature_set_movement(creature_t *c, movement_t *m) {
+    c->m = m;
 }
+
+movement_t *creature_get_movement(creature_t *c) {
+    return c->m;
+}
+
 
 char creature_get_glyph(creature_t *c) {
     return c->glyph;

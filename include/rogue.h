@@ -27,10 +27,13 @@ typedef enum tile_type {
     WALL,
 } tile_type;
 
-
 typedef struct creature creature_t;
+typedef struct movement movement_t;
+
+
 typedef struct tile tile_t;
 typedef tile_t ** map_t;
-   
+
+typedef struct collision collision_t;
 
 #endif /* ROGUE_H */

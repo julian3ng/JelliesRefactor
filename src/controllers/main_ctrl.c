@@ -5,6 +5,7 @@
 #include "view.h"
 #include "creature.h"
 #include "io_ctrl.h"
+#include "action.h"
 #include "map.h"
 
 /*
@@ -36,6 +37,9 @@ int rogue_exit() {
   Update game state
  */
 void update(command parsed_input) {
+    parse_command(parsed_input);
+    movement_t *player_action = creature_get_movement(player);
+    movement_execute(player_action);
 }
 
 /*

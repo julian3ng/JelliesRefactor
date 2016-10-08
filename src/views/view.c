@@ -35,7 +35,7 @@ int draw_creature(creature_t *c, WINDOW *w) {
 
 
 int draw_tile(tile_t *t, int y, int x, WINDOW *w) {
-    mvwaddch(w, y, x, tile_glyph(t));
+    mvwaddch(w, y, x, tile_get_glyph(t));
     return 0;
 }
 

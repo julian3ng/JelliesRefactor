@@ -1,5 +1,7 @@
 #include "globals.h"
 #include "rogue.h"
+#include "creature.h"
+#include "action.h"
 
 #define U_K  'k'
 #define D_K  'j'
@@ -39,3 +41,9 @@ command parse_input(int input) {
         return STAY;
     }
 }
+
+void parse_command(command comm) {
+    creature_set_movement(player, movement_create_dir(player, comm));
+}
+
+
