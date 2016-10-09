@@ -27,6 +27,13 @@ typedef enum tile_type {
     WALL,
 } tile_type;
 
+typedef enum creature_state {
+    NAUGHT,
+    ALIVE,
+    DEAD,
+} creature_state;
+
+
 typedef struct creature creature_t;
 typedef struct movement movement_t;
 

@@ -1,4 +1,5 @@
 #include "rogue.h"
+#include "globals.h"
 #include <stdlib.h>
 
 
@@ -32,11 +33,14 @@ creature_t *tile_get_creature(tile_t *t) {
 void tile_set_creature(tile_t *t, creature_t *c) {
     t->c = c;
 }
-    
+
+
 map_t map_create() {
     tile **m = (tile **) malloc(sizeof(tile *) * MAP_HEIGHT);
+    log_external("malloc: %p (tile **)", (void *) m);
     for (int i=0; i<MAP_HEIGHT; i++) {
         m[i] = (tile *) malloc(sizeof(tile) * MAP_WIDTH);
+        log_external("malloc: %p (tile *)", (void *) m[i]);
     }
 
     return m;
@@ -62,9 +66,12 @@ tile_t *map_tile_at(int y, int x, map_t m) {
     }
     return &m[y][x];
 }
+
 int map_destroy(map_t m) {
     for (int i=0; i<MAP_HEIGHT; i++) {
+        log_external("free: %p (map row)", (void *) m[i]);
         free(m[i]);
     }
+    log_external("free: %p (map)", (void *) m);
     free(m);
 }

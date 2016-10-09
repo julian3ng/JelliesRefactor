@@ -29,6 +29,7 @@ int movement_undo(movement_t *m) {
 
 movement_t *movement_create(creature_t *c, int y, int x) {
     movement_t *m = (movement_t *) malloc(sizeof(movement_t));
+    log_external("malloc: %p (movement)", (void *) m);
     m->c = c;
     m->y = y;
     m->x = x;
@@ -79,5 +80,6 @@ movement_t *movement_create_dir(creature_t *c, command comm) {
 }
   
 void movement_destroy(movement_t *m) {
+    log_external("free: %p (movement)", (void *) m);
     free(m);
 }

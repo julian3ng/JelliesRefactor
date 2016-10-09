@@ -24,14 +24,16 @@ int view_create() {
 }
 
 
-int draw_creature(creature_t *c, WINDOW *w) {
-    if (c == player) {
-        mvwaddch(w, MAP_VIEW_HEIGHT/2, MAP_VIEW_WIDTH/2, creature_get_glyph(c));
-    }
-    return 0;
-}
-
 int draw_tile(tile_t *t, int y, int x, WINDOW *w) {
+    creature_t *c = tile_get_creature(t);
+    if (c) {
+        if (creature_get_state(c) == ALIVE) {
+            mvwaddch(w, y, x, creature_get_glyph(c));
+        } else {
+            mvwaddch(w, y, x, 'X');
+        }
+        return 0;
+    }
     mvwaddch(w, y, x, tile_get_glyph(t));
     return 0;
 }
@@ -60,13 +62,13 @@ int draw_map(map_t m, WINDOW *w) {
     return 0;
 }
 
-void log_msg(const char *fmt, ...) {
+void log_msg(int y, const char *fmt, ...) {
     va_list arg;
     char msg[LOG_VIEW_WIDTH];
     va_start(arg, fmt);
-    vsprintf(msg, fmt, arg);
+    vsnprintf(msg, LOG_VIEW_WIDTH, fmt, arg);
     va_end(arg);
-    mvwprintw(log_view, 1, 1, "%s", msg);
+    mvwprintw(log_view, y, 1, "%s", msg);
 }
 
 
@@ -77,9 +79,9 @@ int draw() {
 
     // update!
     draw_map(map, map_view);
-    draw_creature(player, map_view);
-    log_msg("%2d %2d", creature_get_x(player), creature_get_y(player));
-
+    log_msg(1, "Player pos: %2d %2d", creature_get_x(player), creature_get_y(player));
+    log_msg(2, "player hp: %4d", creature_get_hp(player));
+    log_msg(3, "jelly hp: %4d", creature_get_hp(jelly));
     box(map_view, 0, 0);
     box(log_view, 0, 0);
     // actually draw
@@ -93,6 +95,12 @@ int draw() {
 
 
 int view_destroy() {
+    /* UNDO THESE
+       start_color();
+       curs_set(0);
+     */
+    nocbreak();
+    echo();
     refresh();
     endwin();
     return 0;

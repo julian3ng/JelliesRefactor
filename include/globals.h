@@ -2,10 +2,11 @@
 #define GLOBALS_H
 #include "rogue.h"
 
+extern creature_t *jelly;
 extern creature_t *player;
 extern creature_t **creatures;
 
 extern map_t map;
 
-
+void log_external(const char *fmt, ...);
 #endif /* GLOBALS_H */
