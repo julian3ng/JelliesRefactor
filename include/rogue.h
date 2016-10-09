@@ -23,6 +23,7 @@ typedef enum command {
 
 
 typedef enum tile_type {
+    NO_TILE,
     FLOOR,
     WALL,
 } tile_type;

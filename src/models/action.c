@@ -13,6 +13,10 @@ typedef struct movement {
 
 
 int movement_execute(movement_t *m) {
+    if (!m) {
+        log_external("movement_execute: m = NULL");
+        return -1;
+    }
     m->prev_y = creature_get_y(m->c);
     m->prev_x = creature_get_x(m->c);
     creature_set_pos(m->c, m->y, m->x);
@@ -21,6 +25,10 @@ int movement_execute(movement_t *m) {
 
 
 int movement_undo(movement_t *m) {
+    if (!m) {
+        log_external("movement_undo: m = NULL");
+        return -1;
+    }
     creature_set_pos(m->c, m->prev_y, m->prev_x);
     return 0;
 }
@@ -80,6 +88,10 @@ movement_t *movement_create_dir(creature_t *c, command comm) {
 }
   
 void movement_destroy(movement_t *m) {
+    if (!m) {
+        log_external("movement_destroy: m = NULL");
+        return;
+    }
     log_external("free: %p (movement)", (void *) m);
     free(m);
 }

@@ -8,12 +8,14 @@
 #include "action.h"
 #include "collision_ctrl.h"
 #include "map.h"
+#include "rng.h"
 
 /*
   Initialize curses
   Create player and map
  */
 int rogue_init(int seed) {
+    seed_rng(seed);
     view_create();
     map = map_create();
     map_init(&map);

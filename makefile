@@ -1,7 +1,7 @@
 CC=gcc-5
 LD=gcc-5
 
-MODULES=data_structures utils models views controllers
+MODULES=data_structures utilities models views controllers
 SRC_DIR=$(addprefix src/,$(MODULES)) src
 BUILD_DIR=$(addprefix build/,$(MODULES)) build
 
