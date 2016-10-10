@@ -5,7 +5,6 @@
 #include "rogue.h"
 #include "creature.h"
 
-creature_t *jelly;
 creature_t *player;
 creature_t **creatures;
 

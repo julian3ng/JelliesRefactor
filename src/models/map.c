@@ -7,6 +7,7 @@ typedef enum tile_flags {
     UNFLAGGED = LSHIFT(0),
     FUTURE_WALL = LSHIFT(1),
     FUTURE_FLOOR = LSHIFT(2),
+    VISITED = LSHIFT(3),
 } tile_flags;
 
 typedef struct tile {
@@ -19,7 +20,9 @@ typedef struct tile {
 // MAP GENERATION FUNCTIONS
 void gen_blank(map_t m);
 void gen_cell_auto(map_t m);
-
+void gen_random_walk(map_t m);
+void gen_border(map_t m);
+    
 tile_type tile_get_type(tile_t *t) {
     if (!t) {
         log_external("tile_get_type: t = NULL");
@@ -70,7 +73,9 @@ int map_init(map_t *m) {
         return -1;
     }
     //gen_blank(*m);
+    gen_random_walk(*m);
     gen_cell_auto(*m);
+    gen_border(*m);
     return 0;
 }
 
@@ -108,6 +113,17 @@ int num_neighbor_walls(int y, int x, map_t m) {
     return count;
 }
 
+void fill_wall_percent(map_t m, int wall_percentage) {
+    for (int i=0; i<MAP_HEIGHT; i++) {
+        for (int j=0; j<MAP_WIDTH; j++) {
+            if (gen_rand(100) <= wall_percentage) {
+                m[i][j] = (tile) {WALL, UNFLAGGED, '#', NULL};
+            } else {
+                m[i][j] = (tile) {FLOOR, UNFLAGGED, '.', NULL};
+            }
+        }
+    }
+}
 
 void gen_blank(map_t m) {
     for (int i=0; i<MAP_HEIGHT; i++) {
@@ -121,30 +137,34 @@ void gen_blank(map_t m) {
     }
 }
 
-
-void gen_cell_auto(map_t m) {
+void gen_border(map_t m) {
     for (int i=0; i<MAP_HEIGHT; i++) {
         for (int j=0; j<MAP_WIDTH; j++) {
-            if ((gen_rand() % 100) <= 45) {
+            if ((i == 0) || (i == MAP_HEIGHT-1) || (j == 0) || (j == MAP_WIDTH-1)) {
                 (m)[i][j] = (tile) {WALL, UNFLAGGED, '#', NULL};
-            } else {
-                (m)[i][j] = (tile) {FLOOR, UNFLAGGED, '.', NULL};
-            }
+            } 
         }
     }
+}
 
+void gen_cell_auto(map_t m) {
+    // Fill map randomly with 
+    fill_wall_percent(m, 45);
+
+    // Automata step
     for (int iters = 0; iters < 2; iters++) {
+        // Mark everything with 5+ walls to become a wall, otherwise a floor
         for (int i=0; i<MAP_HEIGHT; i++) {
             for (int j=0; j<MAP_WIDTH; j++) {
                 if (num_neighbor_walls(i, j, m) >= 5) {
                     (m)[i][j] = (tile) {(m)[i][j].type, FUTURE_WALL, (m)[i][j].glyph, NULL};
                 } else {
                     (m)[i][j] = (tile) {(m)[i][j].type, FUTURE_FLOOR, (m)[i][j].glyph, NULL};             
-                
                 }
             }
         }
 
+        // Change all marked tiles to their flagged value
         for (int i=0; i<MAP_HEIGHT; i++) {
             for (int j=0; j<MAP_WIDTH; j++) {
                 if ((m)[i][j].flags == FUTURE_WALL) {
@@ -154,5 +174,29 @@ void gen_cell_auto(map_t m) {
                 }
             }
         }
+    }
+}
+
+
+void gen_random_walk(map_t m) {
+    fill_wall_percent(m, 100);
+    int y = gen_rand(MAP_HEIGHT);
+    int x = gen_rand(MAP_WIDTH);
+    (m)[y][x] = (tile) {FLOOR, VISITED, '.', NULL};
+    for (int i=0; i<3000; i++) {
+        int dy = gen_rand(3) - 1;
+        int dx = 0;
+        if (dy == 0) {
+            if (gen_rand(2) > 0) {
+                dx++;
+            } else {
+                dx--;
+            }
+        }
+        y = (y + dy + MAP_HEIGHT) % MAP_HEIGHT;
+        x = (x + dx + MAP_WIDTH) % MAP_WIDTH;
+        if (map_tile_at(y, x, m)->flags != VISITED) {
+            (m)[y][x] = (tile) {FLOOR, VISITED, '.', NULL};
+        } 
     }
 }

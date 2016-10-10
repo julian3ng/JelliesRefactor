@@ -51,3 +51,30 @@ int resolve_collision(collision_t *coll) {
     return 0;
 }
 
+int check_collision(collision_t *coll) {
+    if (!coll->t) {
+        free(coll);
+        return 0;
+    }
+    creature_t *tile_creature = tile_get_creature(coll->t);
+    if (tile_creature) {
+        free(coll);
+        return 1;
+    }
+
+    if (tile_get_type(coll->t) == WALL) {
+        free(coll);
+        return 1;
+    }
+    free(coll);
+    return 0;
+}
+
+int destroy_collision(collision_t *coll) {
+    if (!coll) {
+        log_external("destroy_collision: coll = NULL");
+        return -1;
+    }
+    free(coll);
+}
+

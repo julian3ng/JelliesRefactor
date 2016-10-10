@@ -6,6 +6,8 @@
 #define DEFAULT_SEED 3501
 #define LSHIFT(N) (1 << (N))
 
+#define MAX_MONSTERS 2
+
 // Controls
 
 typedef enum command {

@@ -12,6 +12,6 @@ int main(int argc, char **argv) {
 
     rogue_init(seed);
     rogue_main();
-    rogue_exit();
+    rogue_exit(-1);
         
 }

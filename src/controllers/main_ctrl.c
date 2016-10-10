@@ -7,6 +7,7 @@
 #include "io_ctrl.h"
 #include "action.h"
 #include "collision_ctrl.h"
+#include "world_ctrl.h"
 #include "map.h"
 #include "rng.h"
 
@@ -17,21 +18,8 @@
 int rogue_init(int seed) {
     seed_rng(seed);
     view_create();
-    map = map_create();
-    map_init(&map);
-    
+    world_generate();    
     system("rm logfile.txt");
-    
-    player = creature_create();
-    creature_init(player, "Julian", MAP_HEIGHT/2, MAP_WIDTH/2, 10, 0, 0, '@');
-    /* TEST CODE */
-    jelly = creature_create();
-    creature_init(jelly, "Jelly", creature_get_y(player) - 2,
-                  creature_get_x(player), 10, 4, 0, 'J');
-
-    /* END TEST CODE */
-
-
     return 0;
 }
 
@@ -39,25 +27,44 @@ int rogue_init(int seed) {
   Destroy player and map
   Exit gracefully from curses
  */
-int rogue_exit() {
+int rogue_exit(int status) {
     creature_destroy(&player);
+    for (int i=0; i<MAX_MONSTERS; i++) {
+        if (creatures[i]) {
+            creature_destroy(&creatures[i]);
+        }
+    }
+    free(creatures);
     map_destroy(map);
     view_destroy();
+    if (status == 1) {
+        printf("YOU WIN\n");
+    } else if (status == 0) {
+        printf("YOU LOSE\n");
+    }
     printf("Exited normally!\n");
     exit(0);
 }
 
 void cleanup(void) {
     if (creature_get_state(player) == DEAD) {
-        rogue_exit();
+        rogue_exit(0);
     }
 
-    if (creature_get_state(jelly) == DEAD) {
-        tile_set_creature(map_tile_at(creature_get_y(jelly), creature_get_x(jelly),
-                                      map), NULL);
-        creature_destroy(&jelly);
+    static int num_dead = 0;
+    for (int i=0; i<MAX_MONSTERS; i++) {
+        if (creature_get_state(creatures[i]) == DEAD) {
+            num_dead++;
+            int cy = creature_get_y(creatures[i]);
+            int cx = creature_get_x(creatures[i]);
+            tile_set_creature(map_tile_at(cy, cx, map), NULL);
+            creature_destroy(&creatures[i]);
+        }
     }
-
+    
+    if (num_dead == MAX_MONSTERS) {
+        rogue_exit(1);
+    }
 }
 
 
@@ -90,18 +97,14 @@ void update(command parsed_input) {
 
     tile_t *c = map_tile_at(creature_get_y(player), creature_get_x(player), map);
 
-    tile_t *j = map_tile_at(creature_get_y(jelly), creature_get_x(jelly), map);
 
     creature_resolve(player);
-    creature_resolve(jelly);
+    for (int i=0; i<MAX_MONSTERS; i++) {
+        creature_resolve(creatures[i]);
+    }
     
     tile_set_creature(c, player);
     movement_destroy(player_action);
-
-    if (creature_get_state(jelly) == ALIVE) {
-        log_external("still alive: %d", creature_get_hp(jelly));
-        tile_set_creature(j, jelly);
-    }
 
     cleanup();
 }

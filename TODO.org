@@ -1,13 +1,7 @@
 * Refactoring
-  - [x] Command pattern for movement
-  - [ ] Make an undoable movement action
   - [ ] Figure out where to put creature creation
   - [ ] NULL CHECKS ON EVERYTHING
 
 * Features
-  - [ ] Collision
-    - [ ] Combat
-    - [ ] Walls
-  - [ ] Map generation 
   - [ ] Victory item / orb run
 

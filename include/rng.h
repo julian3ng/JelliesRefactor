@@ -2,6 +2,6 @@
 #define RNG_H
 
 void seed_rng(unsigned int seed);
-int gen_rand(void);
+int gen_rand(int range);
 
 #endif /* RNG_H */
