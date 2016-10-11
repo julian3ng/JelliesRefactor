@@ -21,6 +21,7 @@ typedef enum command {
     MOVE_DL,
     MOVE_DR,
     QUIT,
+    MAX_COMMANDS,
 } command;
 
 
@@ -28,12 +29,14 @@ typedef enum tile_type {
     NO_TILE,
     FLOOR,
     WALL,
+    MAX_TILE_TYPES,
 } tile_type;
 
 typedef enum creature_state {
     NAUGHT,
     ALIVE,
     DEAD,
+    MAX_CREATURE_STATES,
 } creature_state;
 
 

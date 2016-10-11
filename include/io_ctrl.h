@@ -2,6 +2,7 @@
 #define IO_CTRL_H
 
 command parse_input(int input);
-void parse_command(command comm);
+void command_creature(creature_t *c, command comm);
+
     
 #endif /* IO_CTRL_H */

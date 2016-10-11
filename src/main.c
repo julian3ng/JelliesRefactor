@@ -3,7 +3,6 @@
 #include "main_ctrl.h"
 
 
-
 int main(int argc, char **argv) {
     int seed = DEFAULT_SEED;
     if (argc > 1) {

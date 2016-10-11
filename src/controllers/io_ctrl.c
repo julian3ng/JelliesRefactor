@@ -3,6 +3,7 @@
 #include "creature.h"
 #include "action.h"
 
+
 #define U_K  'k'
 #define D_K  'j'
 #define L_K  'h'
@@ -42,8 +43,9 @@ command parse_input(int input) {
     }
 }
 
-void parse_command(command comm) {
-    creature_set_movement(player, movement_create_dir(player, comm));
+
+void command_creature(creature_t *c, command comm) {
+    creature_set_movement(c, movement_create_dir(c, comm));
 }
 
 

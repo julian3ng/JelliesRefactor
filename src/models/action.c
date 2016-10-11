@@ -34,7 +34,6 @@ int movement_undo(movement_t *m) {
 }
 
 
-
 movement_t *movement_create(creature_t *c, int y, int x) {
     movement_t *m = (movement_t *) malloc(sizeof(movement_t));
     log_external("malloc: %p (movement)", (void *) m);
@@ -45,6 +44,7 @@ movement_t *movement_create(creature_t *c, int y, int x) {
     m->prev_x = 0;
     return m;
 }
+
 
 movement_t *movement_create_dir(creature_t *c, command comm) {
     int next_y = creature_get_y(c), next_x = creature_get_x(c);
