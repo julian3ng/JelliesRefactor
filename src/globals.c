@@ -9,6 +9,7 @@ creature_t *player;
 creature_t **creatures;
 
 map_t map;
+int level;
 
 
 void log_external(const char *fmt, ...) {

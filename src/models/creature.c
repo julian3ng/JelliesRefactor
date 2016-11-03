@@ -9,6 +9,7 @@ typedef struct creature {
     char name[80];
     movement_t *m;
     int y, x, hp, atk, def;
+    int z;
     char glyph;
     creature_state state;
 } creature;
@@ -26,14 +27,14 @@ creature_t *creature_create(void) {
 /*
   Set a creature's fields
 */
-int creature_init(creature_t *c, char name[80], int y, int x,
+int creature_init(creature_t *c, char name[80], int z, int y, int x,
                   int hp, int atk, int def, char glyph) {
     strlcpy(c->name, name, sizeof(c->name));
     if (!c) {
         log_external("creature_init: c = NULL");
         return -1;
     }
-    
+    c->z     = z;
     c->y     = y;
     c->x     = x;
     c->hp    = hp;
@@ -50,6 +51,14 @@ creature_state creature_get_state(creature_t *c) {
         return NAUGHT;
     }
     return c->state;
+}
+
+int creature_get_z(creature_t *c) {
+    if (!c) {
+        log_external("creature_get_z: c = NULL");
+        return -1;
+    }
+    return c->z;
 }
 
 int creature_get_y(creature_t *c) {
@@ -114,6 +123,14 @@ void creature_set_def(creature_t *c, int def) {
         return;
     }        
     c->def = def;
+}
+
+void creature_set_z(creature_t *c, int z) {
+    if (!c) {
+        log_external("creature_set_z: c = NULL");
+        return;
+    }
+    c->z = z;
 }
 
 void creature_set_pos(creature_t *c, int y, int x) {

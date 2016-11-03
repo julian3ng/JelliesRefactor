@@ -22,7 +22,8 @@ void gen_blank(map_t m);
 void gen_cell_auto(map_t m);
 void gen_random_walk(map_t m);
 void gen_border(map_t m);
-    
+void gen_down_stair(map_t m);
+
 tile_type tile_get_type(tile_t *t) {
     if (!t) {
         log_external("tile_get_type: t = NULL");
@@ -76,6 +77,7 @@ int map_init(map_t *m) {
     gen_random_walk(*m);
     gen_cell_auto(*m);
     gen_border(*m);
+    gen_down_stair(*m);
     return 0;
 }
 
@@ -198,5 +200,15 @@ void gen_random_walk(map_t m) {
         if (map_tile_at(y, x, m)->flags != VISITED) {
             (m)[y][x] = (tile) {FLOOR, VISITED, '.', NULL};
         } 
+    }
+}
+
+void gen_down_stair(map_t m) {
+    for (int i=0; i<MAP_HEIGHT; i++) {
+        for (int j=0; j<MAP_WIDTH; j++) {
+            if (((m)[i][j].type == FLOOR) && (gen_rand(1000) < 3)) {
+                (m)[i][j] = (tile) {DOWN_STAIR, UNFLAGGED, '>', NULL};
+            }
+        }
     }
 }

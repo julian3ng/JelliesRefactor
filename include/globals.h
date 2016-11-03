@@ -7,6 +7,7 @@ extern creature_t *player;
 extern creature_t **creatures;
 
 extern map_t map;
+extern int level;
 
 void log_external(const char *fmt, ...);
 #endif /* GLOBALS_H */

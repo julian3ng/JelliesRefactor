@@ -56,12 +56,11 @@ void update(command parsed_input) {
 
     // Save old tile
     world_move_creature(player, map);
+    world_resolve_creature(player, map);
     for (int i=0; i<MAX_MONSTERS; i++) {
         world_move_creature(creatures[i], map);
+        world_resolve_creature(creatures[i], map);
     }
-
-    world_resolve_all_creatures(map);
-    
     
     int cleanup_status = world_cleanup();
     if (cleanup_status != -1) {

@@ -2,7 +2,7 @@
 #include "rogue.h"
 #include "creature.h"
 #include "action.h"
-
+#include <stdlib.h>
 
 #define U_K  'k'
 #define D_K  'j'
@@ -13,6 +13,9 @@
 #define DL_K 'b'
 #define DR_K 'n'
 #define Q_K  'q'
+#define DOWN_K '>'
+
+#define DEBUG_K '`'
 
 /*
   Given raw user input, turn it into a command
@@ -35,8 +38,12 @@ command parse_input(int input) {
         return MOVE_DL;
     case DR_K:
         return MOVE_DR;
+    case DOWN_K:
+        return DESCEND;
     case Q_K:
         return QUIT;
+    case DEBUG_K:
+        return DEBUG;
     case '.':
     default:
         return STAY;
@@ -45,6 +52,9 @@ command parse_input(int input) {
 
 
 void command_creature(creature_t *c, command comm) {
+    if (comm == DEBUG) {
+        creature_set_movement(c, NULL);
+    }
     creature_set_movement(c, movement_create_dir(c, comm));
 }
 

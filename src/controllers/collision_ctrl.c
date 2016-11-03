@@ -46,6 +46,16 @@ int resolve_collision(collision_t *coll) {
         movement_undo(creature_get_movement(coll->c));
     }
 
+    if ((tile_get_type(coll->t) == DOWN_STAIR) && (creature_get_z(coll->c) > level)) {
+        level++;
+    }
+    \
+
+    if ((tile_get_type(coll->t) == FLOOR) && (creature_get_z(coll->c) > level)) {
+        movement_undo(creature_get_movement(coll->c));
+    }
+
+
     log_external("free: %p (collision)", (void *) coll);
     free(coll);
     return 0;

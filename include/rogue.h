@@ -20,7 +20,9 @@ typedef enum command {
     MOVE_UR,
     MOVE_DL,
     MOVE_DR,
+    DESCEND,
     QUIT,
+    DEBUG,
     MAX_COMMANDS,
 } command;
 
@@ -29,6 +31,7 @@ typedef enum tile_type {
     NO_TILE,
     FLOOR,
     WALL,
+    DOWN_STAIR,
     MAX_TILE_TYPES,
 } tile_type;
 

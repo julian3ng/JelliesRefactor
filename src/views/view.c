@@ -79,7 +79,7 @@ int draw() {
 
     // update!
     draw_map(map, map_view);
-    log_msg(1, "Player pos: %2d %2d", creature_get_x(player), creature_get_y(player));
+    log_msg(1, "Player pos: %2d %2d %2d", creature_get_x(player), creature_get_y(player), creature_get_z(player));
     log_msg(2, "player hp: %4d", creature_get_hp(player));
     box(map_view, 0, 0);
     box(log_view, 0, 0);
